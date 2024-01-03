@@ -1,0 +1,4 @@
+/* external-scope.css */
+.external-section {
+    background-color: var(--mui-palette-grey-50);
+  }
