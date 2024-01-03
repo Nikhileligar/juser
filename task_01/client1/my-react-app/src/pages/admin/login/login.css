@@ -1,0 +1,68 @@
+.form-component {
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: #ffffff;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(10px);
+    color: rgb(10, 10, 10);
+    animation: x 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) ;
+}
+
+/* @keyframes x {
+    0%{
+      translate: 1000px;
+
+    }100%{
+      translate: 0px;
+    }
+  } */
+
+
+.m-Container {
+    /* background-image: url('../../images/img_2_gym.avif'); */
+    background-color: white;
+    background-size: 'cover';
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    width: 100%;
+    backdrop-filter: blur(8px);
+}
+
+.textFeild-component {
+    background-color: rgba(0,0,0,.5);
+    color: #ffffff00;
+}
+
+.custom-placeholder::placeholder {
+    color: rgb(7, 0, 221); /* Set the placeholder text color to white */
+  }
+
+label {
+    border: 5px;
+    border-radius: 20px;
+    border-color: black;
+}
+
+.button-submit {
+    color: black;
+}
+
+.text {
+    background-color:(255, 255, 255, 0.653);
+    color: red;
+}
+.MuiBox-root css-1796qej{
+width: 100% !important; 
+}
+@media (min-width: 1536px){
+.css-1796qej {
+    width: 100% !important;
+}
+}
