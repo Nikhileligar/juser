@@ -7,7 +7,7 @@ import sendMail from "../utils/mailer.js";
 import mongoose from 'mongoose';
 import { saveFile } from "../utils/fileService.js";
 import { v4 as uuidv4 } from 'uuid';
-
+import axios  from 'axios';
 // import { encrypt, compare } from "../services/crypto";
 
 dbConfig()
@@ -60,7 +60,7 @@ const signup = async function signup (req,res,io) {
             throw new Error('error');
         }
         
-        io.emit('user_action', { action: 'signup_success', username: name });
+        io.emit('user_action', { action: 'signup_success', username: validateUserExists.name });
     
         res.status(201).json({
             message: `${name} signed up successfully and otp has been sent to your registerd mobile number`,
@@ -169,10 +169,19 @@ const signIn = async function signIn(req,res,io) {
     try {
         const { password, phone } = req.body;
         console.log(password,phone,'name(1)');
+
+        if (!(phone[0] === '6' || phone[0] === '7' || phone[0] === '8' || phone[0] === '9')) {
+            console.log(phone.length, phone[0], 'name(1)');
+            return res.status(400).json({
+                message: 'Invalid phone number',
+                phone
+            });
+        }
+
         const validateUserExists = await User.findOne({phone});
         console.log(validateUserExists,'valid');
 
-        if (validateUserExists.length === 0) {
+        if (validateUserExists.length == 0) {
             // User not found
             return res.status(401).json({
                 message: 'user doesnt exists in db'
@@ -186,14 +195,6 @@ const signIn = async function signIn(req,res,io) {
             });
         }
 
-        if (!(phone[0] === '6' || phone[0] === '7' || phone[0] === '8' || phone[0] === '9')) {
-            console.log(phone.length, phone[0], 'name(1)');
-            return res.status(400).json({
-                message: 'Invalid phone number',
-                phone
-            });
-        }
-
         console.log(phone.length,validateUserExists.name,'phone length');
         const name = validateUserExists.name;
 
@@ -203,8 +204,8 @@ const signIn = async function signIn(req,res,io) {
             httpOnly: true
         });
 
-        // const i = io.emit('user_action', { action: 'login_success', username: name });
-        // console.log(i,'iiiii')
+        const i = io.emit('user_action', { action: 'login_success', username: phone });
+        console.log(i,'iiiii')
         res.status(201).json({
             message: `${validateUserExists.name} signed in successfully`,
             success: true,
@@ -263,7 +264,7 @@ const adminSignup = async function adminSignup (req,res, io) {
 const adminSignIn = async function adminSignIn(req,res, io) {
     try {
         const { password, email } = req.body;
-        console.log(email,'name(1)');
+        console.log(email,password,'name(1)');
         const validateUserExists = await Admin.findOne({email});
         if(password !== validateUserExists.password) {
             return res.status(401).json({
@@ -278,11 +279,12 @@ const adminSignIn = async function adminSignIn(req,res, io) {
         console.log(token,'token');
 
         io.emit('user_action', { action: 'admin_login_success', username: validateUserExists.name });
-
+        
+        
         return res.status(201).json({
             message: `${validateUserExists.name} signed in successfully`,
             success: true,
-            token
+            token,
         })
 
     } catch (err) {
