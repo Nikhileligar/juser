@@ -30,6 +30,7 @@ const io = new Server(server, {
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+// handle cors to grant full access to the client api
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.options('*', cors());
+
 app.use('/api',router);
 
 
@@ -59,11 +61,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('admin-signup', (data) => {
-      console.log(`Received event user successfully verified : ${data.username}`);
+      console.log(`Received event admin user successfully sign up: ${data.username}`);
     });
 
     socket.on('admin-signin', (data) => {
-      console.log(`Received event user successfully verified : ${data.username}`);
+      console.log(`Received event admin user successfully sign in : ${data.username}`);
       socket.emit('admin_login_response', { message: 'Login successful on the server side' });
     });
 
